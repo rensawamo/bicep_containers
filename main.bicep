@@ -1,9 +1,12 @@
 targetScope = 'subscription'
 
+// modules/virtualNetwork.bicep 
+param virtualNetworkName string 
+param virtualNetworkAddressPrefix string
+
 var policyDefinitionName = 'DenyFandGSeriesVMs'
 var policyAssignmentName = 'DenyFandGSeriesVMs'
-
-// policyの割り当て
+var resourceGroupName = 'ToyNetworking'
 
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2020-03-01' = {
   name: policyDefinitionName
@@ -46,3 +49,16 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2020-03-01'
   }
 }
 
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
+  name: resourceGroupName
+  location: deployment().location
+}
+
+module virtualNetwork 'modules/virtualNetwork.bicep' = {
+  scope: resourceGroup // vmがresoureceGrop 内でデプロイされる
+  name: 'virtualNetwork'
+  params: {
+    virtualNetworkName: virtualNetworkName
+    virtualNetworkAddressPrefix: virtualNetworkAddressPrefix
+  }
+}
