@@ -23,6 +23,22 @@ targetScope = 'managementGroup'
 複数のリソースグループにリソースをデプロイすること
 
 
+targetScope = 'subscription'とすることで、このBicepファイルはサブスクリプションレベルのデプロイメントを対象とする
+
+
+外部モジュールを使用することで、リソースの定義を再利用し、構成をモジュール化できる
+
+
+resourceGroup('ToyNetworking')を指定することで、ToyNetworkingという名前のリソースグループ内にモジュールがデプロイされる
+
+```sh
+targetScope = 'subscription'
+
+module networkModule 'modules/network.bicep' = {
+  scope: resourceGroup('ToyNetworking')
+  name: 'networkModule'
+```
+
 ### １つのリソースに対してスコープを指定
 以下では、テナント内に管理グループをデプロイする例
 ```sh
