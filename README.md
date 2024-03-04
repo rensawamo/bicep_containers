@@ -79,26 +79,29 @@ az deployment sub create \
 ![image](https://github.com/rensawamo/bicep_containers/assets/106803080/0a791c53-0d7c-4249-a09c-ef91331521fe)
 
 
+## リソースを管理グループにデプロイする
+× 各サブスクリプションにポリシーの定義を行う
+○ すべてのサブスクリプションを管理グループ内にふくめる
+
+### 管理グループの作成
+```sh
+az account management-group create --name SecretRND --display-name "Secret R&D Projects"
+```
+
+### デプロイ
+```sh
+managementGroupId="SecretRND"
+templateFile="main.bicep"
+today=$(date +"%d-%b-%Y")
+deploymentName="mg-scope-"$today
+
+az deployment mg create --management-group-id $managementGroupId --name $deploymentName --location westus --template-file $templateFile
+```
+これより、マネージメントグループによって サブスクが管理される
+![image](https://github.com/rensawamo/bicep_containers/assets/106803080/6e8ae20e-cef1-463b-a00a-fc36134071b1)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![image](https://github.com/rensawamo/bicep_containers/assets/106803080/2ea3ecfc-9e20-4d07-a6b3-8828e750351c)
 
 
 
